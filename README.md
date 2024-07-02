@@ -8,3 +8,10 @@
 6. source ./venv/Scripts/activate
 7. pip install -r requirements.txt
 8. python app.py
+
+## first excercise
+1. change carlist.html 
+2. copy template from https://www.w3schools.com/bootstrap/bootstrap_templates.asp
+3. add {% for %} loop
+4. add singe car page
+
