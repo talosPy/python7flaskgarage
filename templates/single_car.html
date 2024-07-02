@@ -63,16 +63,14 @@
 
 
 <div class="container"> 
-{% for car in carz %}    
   <div class="row">
     <div class="col-sm-4">
       <div class="panel panel-primary">
-        <div class="panel-heading">{{ car['desc'] }}  </div>
+        <div class="panel-heading">{{ car['desc'] }}: </div>
         <div class="panel-body"><img src="{{ car['image'] }}" class="img-responsive" style="width:100%" alt="Image"></div>
-        <div class="panel-footer">{{ car['number'] }} - {{ car['urgent']}}</div>
+        <div class="panel-footer">{{ car['number'] }}</div>
       </div>
     </div>
-    {% endfor %}
 </div><br><br>
 
 <footer class="container-fluid text-center">

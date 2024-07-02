@@ -1,34 +1,39 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-car1 = {"number": "123-456", "problems": []}
-car2 = {"number": "456-789", "problems": []}
-cars = [car1, car2]
+car1 = {"number": "5064054", "problems": ['Fuel Pump'], "image": "https://www.gallery-aaldering.com/wp-content/uploads/gallery/34426179/34426179-83.jpg?v=7", "desc": 'Corvette C1', "urgent": True}
+car2 = {"number": "1331356", "problems": ['Bonnet'], "image": "https://cdn.ferrari.com/cms/network/media/img/resize/5db04650b6fd1830814bec82-ferrari-f12-berlinetta-architecture-1-image?", "desc": 'Ferrari F12', "urgent": True}
+car3 = {"number": "7065070", "problems": ['Paint Job'], "image": "https://upload.wikimedia.org/wikipedia/commons/c/ca/2017_Lamborghini_Huracan_LP610.jpg", "desc": 'Lamborghini Huracan', "urgent": False}
+cars = [car1, car2, car3]
 
 
 @app.route("/")
 def cars_list():
-   return render_template('car_list.html', car_list=cars)
+   return render_template('car_list.html', carz=cars)
 
-    # final_str = ""
-    # for car in cars:
-    #     final_str += f"<p>{car['number']}</p>"
-
-    # return final_str
 
 
 @app.route("/single_car/<int:index>")
 def single_car(index):
-    return (
-        f"<p>Number:{cars[index]['number']} <br> Problems:{cars[index]['problems']}</p>"
-    )
+    for car in cars:
+        if cars.index(car) == index:
+            return render_template('single_car.html', car = car)
+
 
 
 @app.route("/add_car/")
 def add_car():
-    print("****** Adding car")
-    return "Adding car"
+    return render_template('add_car.html') 
+
+
+
+@app.route("/add_to_list/", methods=["POST", "GET"])
+def add_to_list():
+    car_number = request.form["cNumber"]
+    return "Added to List" + request.form['cNumber']
+
+
 
 
 if __name__ == "__main__":
