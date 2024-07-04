@@ -8,7 +8,7 @@ car3 = {"number": "7065070", "problems": ['Paint Job'], "image": "https://upload
 cars = [car1, car2, car3]
 
 
-@app.route("/")
+@app.route("/main")
 def cars_list():
    return render_template('car_list.html', carz=cars)
 
@@ -26,6 +26,11 @@ def single_car(index):
 def add_car():
     return render_template('add_car.html') 
 
+
+@app.route("/urgent_car/")
+def urgent():
+    urgent_cars = [car for car in cars if car['urgent']]
+    return render_template('urgent_car.html', cars=urgent_cars)
 
 
 @app.route("/add_to_list/", methods=["POST", "GET"])
