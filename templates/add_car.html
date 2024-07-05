@@ -1,9 +1,30 @@
 
-<form action="/add_to_list" method="POST">
-    Car Number:<br />
-    <input type="text" id="cNumber" name="cNumber" value=""><br>
-    Car URL:<br />
-    <input type="url" id="cUrl" name="cUrl" value=""><br><br>
-    <input type="submit" value="Add Car">
-  </form> 
-  
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Car</title>
+  </head>
+  <body>
+    <h2>Add a New Car</h2>
+    <form action="/add_car" method="POST">
+      <label for="id">Car ID:</label><br />
+      <input type="text" id="id" name="id" required /><br /><br />
+
+      <label for="number">Car Number:</label><br />
+      <input type="text" id="number" name="number" required /><br /><br />
+
+      <label for="urgent">Urgent (True/False):</label><br />
+      <input type="text" id="urgent" name="urgent" required /><br /><br />
+
+      <label for="image">Image URL:</label><br />
+      <input type="text" id="image" name="image" required /><br /><br />
+
+      <label for="problems">Problems (comma-separated):</label><br />
+      <input type="text" id="problems" name="problems" /><br /><br />
+
+      <input type="submit" value="Add Car" />
+    </form>
+  </body>
+</html>  

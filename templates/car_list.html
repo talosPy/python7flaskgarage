@@ -1,84 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <title>Bootstrap Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <style>
-    /* Remove the navbar's default rounded borders and increase the bottom margin */ 
-    .navbar {
-      margin-bottom: 50px;
-      border-radius: 0;
-    }
-    
-    /* Remove the jumbotron's default bottom margin */ 
-     .jumbotron {
-      margin-bottom: 0;
-    }
-   
-    /* Add a gray background color and some padding to the footer */
-    footer {
-      background-color: #f2f2f2;
-      padding: 25px;
-    }
-  </style>
-</head>
-<body>
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+      /* Remove the navbar's default rounded borders and increase the bottom margin */
+      .navbar {
+        margin-bottom: 50px;
+        border-radius: 0;
+      }
 
-<div class="jumbotron">
-  <div class="container text-center">
-    <h1>Garage</h1>      
-    <p>No Shirts, No Shoes, No Mazdas</p>
-  </div>
-</div>
+      /* Remove the jumbotron's default bottom margin */
+      .jumbotron {
+        margin-bottom: 0;
+      }
 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
-      <a class="navbar-brand" href="#">Logo</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="http://127.0.0.1:9000/">Home</a></li>
-        <li><a href="http://127.0.0.1:9000/urgent_car/">Urgent</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+      /* Add a gray background color and some padding to the footer */
+      footer {
+        background-color: #f2f2f2;
+        padding: 25px;
+      }
+      .panel-body img {
+        width: 100%; /* Fill entire width of panel body */
+        height: auto; /* Maintain aspect ratio */
+      }
+      .jumbotron-sm {
+        padding: 2rem 1rem; /* Example padding adjustment */
+      }
 
-
-<div class="container"> 
-{% for car in carz %}    
-  <div class="row">
-    <div class="col-sm-4">
-      <div class="panel panel-primary">
-        <div class="panel-heading">{{ car['desc'] }}  </div>
-        <div class="panel-body"><img src="{{ car['image'] }}" class="img-responsive" style="width:100%" alt="Image"></div>
-        <div class="panel-footer">{{ car['number'] }}</div>
+      .jumbotron-sm h1 {
+        font-size: 2.5rem; /* Example font size adjustment */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="jumbotron jumbotron-sm">
+      <div class="container text-center">
+        <h1 class="h1">Tal's Garage</h1>
+        <h2 class="h2">No Shoes,No Shirts,No Mazdas</h2>
       </div>
     </div>
-    {% endfor %}
-</div><br><br>
 
-<footer class="container-fluid text-center">
-  <p>Garage Copyright</p>  
-  <form class="form-inline">Get deals:
-    <input type="email" class="form-control" size="50" placeholder="Email Address">
-    <button type="button" class="btn btn-danger">Sign Up</button>
-  </form>
-</footer>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button
+            type="button"
+            class="navbar-toggle"
+            data-toggle="collapse"
+            data-target="#myNavbar"
+          >
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Logo</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/">All Cars</a></li>
+            <li><a href="/?urgent=true">Urgent Cars</a></li>
+            <li><a href="/?problem=engine">Engine issue</a></li>
+            <li><a href="/?problem=gear">Gear issue</a></li>
+            <li><a href="/add_car">Add car</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href="#"
+                ><span class="glyphicon glyphicon-user"></span> Your Account</a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <h2>Search for Cars by Problem</h2>
+    <form action="/" method="GET">
+      <label for="problem">Enter a problem:</label><br />
+      <input
+        type="text"
+        id="problem"
+        name="problem"
+        placeholder="Enter problem..."
+      />
+      <br /><br />
+      <input type="submit" value="Search" />
+    </form>
+    <div class="container">
+      <div class="row">
+        {% for car in car_list %}
+        <div class="col-sm-4">
+          <div class="card">
+            <h2 class="card-title text-center mt-3 mb-0">{{ car.number }}</h2>
+            <a href="/single_car/{{ car.id }}">
+              <img
+                src="{{ car.image }}"
+                class="card-img-top"
+                alt="Car Image"
+                style="width: 100%; height: 150px; object-fit: cover"
+              />
+            </a>
+            <div class="card-body">
+              <p class="card-text">{{ car.problems }}</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
 
-</body>
+    <br />
+
+    <br /><br />
+
+    <footer class="container-fluid text-center">
+      <p>Garage Copyright</p>
+      <form class="form-inline">
+        Get deals:
+        <input
+          type="email"
+          class="form-control"
+          size="50"
+          placeholder="Email Address"
+        />
+        <button type="button" class="btn btn-danger">Sign Up</button>
+      </form>
+    </footer>
+  </body>
 </html>
