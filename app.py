@@ -8,7 +8,7 @@ car3 = {"number": "7065070", "problems": ['Paint Job'], "image": "https://upload
 cars = [car1, car2, car3]
 
 
-@app.route("/main")
+@app.route("/")
 def cars_list():
    return render_template('car_list.html', carz=cars)
 
