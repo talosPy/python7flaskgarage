@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'  # Needed for session management
 
 car1 = {
     "id": "1",
@@ -35,37 +36,22 @@ cars = [car1, car2, car3, car4]
 
 @app.route("/")
 def cars_list():
-    # handling problem filter
-    problem_filter = request.args.get('problem','').lower()
+    problem_filter = request.args.get('problem', '').lower()
     if problem_filter:
         filtered_cars = []
         for car in cars:
-            if problem_filter in car.get('problems',[]):
+            if problem_filter in car.get('problems', []):
                 filtered_cars.append(car)
     else:
-        filtered_cars = cars  # Return all cars if no problem filter is requested
+        filtered_cars = cars
 
-    # handling urgent after problem filter
-    urgent = request.args.get('urgent','')
+    urgent = request.args.get('urgent', '')
     if urgent == "true":
         new_cars = [car for car in filtered_cars if car.get('urgent')]
     else:
         new_cars = filtered_cars
 
     return render_template("car_list.html", car_list=new_cars, problem=problem_filter, urgent=urgent)
-
-    
-
-    # speific problem filter
-    # if problem_filter == "engine":
-    #     filtered_cars = [car for car in cars if "engine" in car.get('problems')]
-
-        # list comprehension is equivalent to the following code
-        # new_cars = []
-        # for car in cars:
-        #     if car.get('urgent'):
-        #         new_cars.append(car)
-        
 
 
 @app.route("/single_car/<id>")
@@ -76,28 +62,45 @@ def single_car(id):
     return render_template("single_car.html", car=None)
 
 
-
 @app.route("/add_car/", methods=["GET", "POST"])
 def add_car():
     if request.method == "POST":
         new_car = {
             "id": request.form.get("id"),
             "number": request.form.get("number"),
-            "urgent": request.form.get("urgent").lower() == "true",  # Convert to boolean
+            "urgent": request.form.get("urgent").lower() == "true",
             "image": request.form.get("image"),
             "problems": [prob.strip() for prob in request.form.get("problems", "").split(",") if prob.strip()]
         }
         cars.append(new_car)
-        # return redirect('/')  # simple version of redirect
-        return redirect(url_for('cars_list'))  # Redirect to cars_list route or any other page
+        return redirect(url_for('cars_list'))
     return render_template("add_car.html")
 
 
+@app.route("/search_car", methods=["GET", "POST"])
+def search_car():
+    car = None
+    if request.method == "POST":
+        car_id = request.form.get("id")
+        car = next((car for car in cars if car["id"] == car_id), None)
+    return render_template("search_car.html", car=car)
 
-@app.route("/add_to_list/", methods=["POST", "GET"])
-def add_to_list():
-    print("****** Adding to list", request.form["cNumber"])
-    return "Added to list:" + request.form["cNumber"]
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        if username == "Talos" and password == "Solat":  # Simple check for example purposes
+            session["user"] = username
+            return redirect(url_for('cars_list'))
+    return render_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    session.pop("user", None)
+    return redirect(url_for("login"))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search Car</title>
+  </head>
+  <body>
+    <h2>Search for a Car</h2>
+    <form action="/search_car" method="POST">
+      <label for="id">Car ID:</label><br />
+      <input type="text" id="id" name="id" required /><br /><br />
+      <input type="submit" value="Search" />
+    </form>
+    
+    {% if car %}
+      <h3>Car Details</h3>
+      <p><strong>ID:</strong> {{ car.id }}</p>
+      <p><strong>Number:</strong> {{ car.number }}</p>
+      <p><strong>Urgent:</strong> {{ car.urgent }}</p>
+      <p><strong>Problems:</strong> {{ car.problems }}</p>
+      <p><strong>Image:</strong></p>
+      <img src="{{ car.image }}" alt="Car Image" width="300">
+    {% elif car is not none %}
+      <p>No car found with the given ID.</p>
+    {% endif %}
+  </body>
+</html>
