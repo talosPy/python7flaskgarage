@@ -5,28 +5,28 @@ app.secret_key = 'your_secret_key'  # Needed for session management
 
 car1 = {
     "id": "1",
-    "number": "123-456",
+    "number": "5054064",
     "problems": ["engine", "breaks"],
     "urgent": True,
     "image": "https://www.gallery-aaldering.com/wp-content/uploads/gallery/34426179/34426179-83.jpg?v=7",
 }
 car2 = {
     "id": "2",
-    "number": "456-789",
+    "number": "1331569",
     "problems": ["engine", "breaks"],
     "urgent": True,
     "image": "https://cdn.ferrari.com/cms/network/media/img/resize/5db04650b6fd1830814bec82-ferrari-f12-berlinetta-architecture-1-image?",
 }
 car3 = {
     "id": "3",
-    "number": "333-333",
+    "number": "7060069",
     "urgent": False,
     "problems": ["gear", "breaks"],
     "image": "https://upload.wikimedia.org/wikipedia/commons/c/ca/2017_Lamborghini_Huracan_LP610.jpg",
 }
 car4 = {
     "id": "4",
-    "number": "444-444",
+    "number": "0011122",
     "urgent": False,
     "problems": ["gear", "engine"],
     "image": "https://imgd.aeplcdn.com/370x208/n/cw/ec/156405/xuv-3xo-exterior-right-front-three-quarter-33.jpeg?isig=0&q=80",
@@ -101,6 +101,32 @@ def login():
 def logout():
     session.pop("user", None)
     return redirect(url_for("login"))
+
+@app.route("/delete_car/<id>", methods=["GET"])
+def delete_car(id):
+    global cars 
+    cars = [car for car in cars if car['id'] != id]
+    return redirect(url_for('cars_list'))
+
+
+@app.route("/edit_car/<id>", methods=["GET", "POST"])
+def edit_car(id):
+    global cars
+
+    if request.method == "POST":
+        for car in cars:
+            if car['id'] == id:
+                car['number'] = request.form.get("number")
+                car['urgent'] = request.form.get("urgent").lower() == "true"
+                car['image'] = request.form.get("image")
+                car['problems'] = [prob.strip() for prob in request.form.get("problems", "").split(",") if prob.strip()]
+        return redirect(url_for('cars_list'))
+
+    car_to_edit = next((car for car in cars if car['id'] == id), None)
+    if car_to_edit:
+        return render_template("edit_car.html", car=car_to_edit)
+    else:
+        return "Car not found", 404
 
 
 if __name__ == "__main__":

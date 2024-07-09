@@ -1,30 +1,59 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add Car</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
   </head>
   <body>
-    <h2>Add a New Car</h2>
-    <form action="/add_car" method="POST">
-      <label for="id">Car ID:</label><br />
-      <input type="text" id="id" name="id" required /><br /><br />
+    <div class="container">
+      <h2 class="text-center">Add a New Car</h2>
+      <form action="/add_car" method="POST" class="form-horizontal">
+        <div class="form-group">
+          <label for="id" class="col-sm-2 control-label">Car ID:</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="id" name="id" required />
+          </div>
+        </div>
 
-      <label for="number">Car Number:</label><br />
-      <input type="text" id="number" name="number" required /><br /><br />
+        <div class="form-group">
+          <label for="number" class="col-sm-2 control-label">Car Number:</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="number" name="number" required />
+          </div>
+        </div>
 
-      <label for="urgent">Urgent (True/False):</label><br />
-      <input type="text" id="urgent" name="urgent" required /><br /><br />
+        <div class="form-group">
+          <label for="urgent" class="col-sm-2 control-label">Urgent (True/False):</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="urgent" name="urgent" required />
+          </div>
+        </div>
 
-      <label for="image">Image URL:</label><br />
-      <input type="text" id="image" name="image" required /><br /><br />
+        <div class="form-group">
+          <label for="image" class="col-sm-2 control-label">Image URL:</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="image" name="image" required />
+          </div>
+        </div>
 
-      <label for="problems">Problems (comma-separated):</label><br />
-      <input type="text" id="problems" name="problems" /><br /><br />
+        <div class="form-group">
+          <label for="problems" class="col-sm-2 control-label">Problems (comma-separated):</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="problems" name="problems" />
+          </div>
+        </div>
 
-      <input type="submit" value="Add Car" />
-    </form>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary">Add Car</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   </body>
-</html>  
+</html>

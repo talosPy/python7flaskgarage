@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Bootstrap Example</title>
+    <title>Car List</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
@@ -35,7 +35,7 @@
     <div class="jumbotron jumbotron-sm">
         <div class="container text-center">
             <h1 class="h1">Tal's Garage</h1>
-            <h2 class="h2">No Shoes,No Shirts,No Mazdas</h2>
+            <h2 class="h2">No Shoes, No Shirts, No Mazdas</h2>
         </div>
     </div>
 
@@ -75,12 +75,14 @@
             </div>
         </div>
     </nav>
+
     <h2>Search for Cars by Problem</h2>
     <form action="/" method="GET">
         <label for="problem">Enter a problem:</label><br />
         <input type="text" id="problem" name="problem" placeholder="Enter problem..." /><br /><br />
         <input type="submit" value="Search" />
     </form>
+
     <div class="container">
         <div class="row">
             {% for car in car_list %}
@@ -92,13 +94,17 @@
                     </a>
                     <div class="card-body">
                         <p class="card-text">{{ car.problems }}</p>
+                        <a href="{{ url_for('edit_car', id=car.id) }}" class="btn btn-primary">Edit</a>
+                        <a href="{{ url_for('delete_car', id=car.id) }}" class="btn btn-danger">Delete</a>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
     </div>
+
     <br /><br />
+
     <footer class="container-fluid text-center">
         <p>Garage Copyright</p>
         <form class="form-inline">
