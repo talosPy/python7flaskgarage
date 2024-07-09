@@ -69,7 +69,7 @@ def add_car():
             'urgent': request.form.get('urgent', '').lower() == 'true'
         }
         cars.append(new_car)
-        return redirect(url_for('car_list'))
+        return redirect(url_for('cars_list'))
     return render_template('add_car.html')
 
 
@@ -119,11 +119,12 @@ def edit_car(id):
     else:
         return "Car not found", 404
 
-@app.route('/delete_car/<int:id>', methods=['GET', 'POST'])
+@app.route('/delete_car/<int:id>', methods=['GET'])
 def delete_car(id):
-    global car_list
-    car_list = [car for car in car_list if car['id'] != id]
-    return redirect(url_for('car_list'))
+    global cars
+    cars = [car for car in cars if car['id'] != id]
+    return redirect(url_for('cars_list'))
+
 
 
 if __name__ == "__main__":
