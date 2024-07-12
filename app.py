@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from functools import wraps
+from datetime import datetime, timedelta, timezone
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Needed for session management
+
 
 # Sample car data
 cars = [
@@ -37,6 +39,8 @@ cars = [
 ]
 
 
+SESSION_TIMEOUT = timedelta(seconds=180)
+
 
 def login_required(f):
     @wraps(f)
@@ -44,7 +48,16 @@ def login_required(f):
         if not session.get("logged_in"):
             flash("Please Login to Continue", "danger")
             return redirect(url_for("login"))
+
+        last_active = session.get("_last_active")
+        if last_active and datetime.now(timezone.utc) > last_active + SESSION_TIMEOUT:
+            session.clear()
+            flash("Session expired due to inactivity. Please login again.", "danger")
+            return redirect(url_for("login"))
+
+        session["_last_active"] = datetime.now(timezone.utc)  # Set current UTC time
         return f(*args, **kwargs)
+
     return decorated_function
 
 
@@ -107,6 +120,7 @@ def login():
         if username == "Talos" and password == "Solat":  # Simple check for example purposes
             session["user"] = username
             session["logged_in"] = True
+            session["_last_active"] = datetime.now(timezone.utc)  # Initialize _last_active
             flash('You have logged in!', 'success')
             return redirect(url_for('cars_list'))
         else:
@@ -119,6 +133,7 @@ def login():
 def logout():
     session.pop("user", None)
     session.pop("logged_in", None)
+    session.pop("_last_active", None)
     flash('You have logged out!', 'success')
     return redirect(url_for("login"))
 
