@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Needed for session management
 
-# Sample data for cars
+
 car1 = {
     "id": "1",
     "number": "5054064",
@@ -35,6 +35,7 @@ car4 = {
 cars = [car1, car2, car3, car4]
 
 
+
 @app.route("/")
 def cars_list():
     problem_filter = request.args.get('problem', '').lower()
@@ -52,10 +53,12 @@ def cars_list():
     return render_template("car_list.html", car_list=new_cars)
 
 
+
 @app.route("/single_car/<id>")
 def single_car(id):
     car = next((car for car in cars if car["id"] == id), None)
     return render_template("single_car.html", car=car)
+
 
 
 @app.route('/add_car/', methods=['GET', 'POST'])
@@ -69,6 +72,7 @@ def add_car():
             'urgent': request.form.get('urgent', '').lower() == 'true'
         }
         cars.append(new_car)
+        flash(f'Added Car {new_car.get('number')}', 'success')
         return redirect(url_for('cars_list'))
     return render_template('add_car.html')
 
@@ -83,6 +87,7 @@ def search_car():
     return render_template("search_car.html", car=car)
 
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -90,14 +95,18 @@ def login():
         password = request.form.get("password")
         if username == "Talos" and password == "Solat":  # Simple check for example purposes
             session["user"] = username
+            flash('You Have Logged In!!!', 'success')
             return redirect(url_for('cars_list'))
     return render_template("login.html")
+
 
 
 @app.route("/logout")
 def logout():
     session.pop("user", None)
+    flash('You Have Logged Out!!!', 'success')
     return redirect(url_for("login"))
+
 
 
 @app.route("/edit_car/<id>", methods=["GET", "POST"])
@@ -119,10 +128,13 @@ def edit_car(id):
     else:
         return "Car not found", 404
 
+
+
 @app.route('/delete_car/<int:id>', methods=['GET'])
 def delete_car(id):
     global cars
     cars = [car for car in cars if car['id'] != id]
+    flash(f'{car.get['number']} Have been Deleted', 'success')
     return redirect(url_for('cars_list'))
 
 
