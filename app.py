@@ -52,7 +52,7 @@ def login_required(f):
         last_active = session.get("_last_active")
         if last_active and datetime.now(timezone.utc) > last_active + SESSION_TIMEOUT:
             session.clear()
-            flash("Session expired due to inactivity. Please login again.", "danger")
+            flash("idle for 3 minutes, Session Expired, Please Re-log", "danger")
             return redirect(url_for("login"))
 
         session["_last_active"] = datetime.now(timezone.utc)  # Set current UTC time
