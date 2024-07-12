@@ -39,7 +39,7 @@ cars = [
 ]
 
 
-SESSION_TIMEOUT = timedelta(seconds=180)
+SESSION_TIMEOUT = timedelta(minutes=15)
 
 
 def login_required(f):
@@ -52,7 +52,7 @@ def login_required(f):
         last_active = session.get("_last_active")
         if last_active and datetime.now(timezone.utc) > last_active + SESSION_TIMEOUT:
             session.clear()
-            flash("idle for 3 minutes, Session Expired, Please Re-log", "danger")
+            flash("idle for 15 minutes, Session Expired, Please Login", "danger")
             return redirect(url_for("login"))
 
         session["_last_active"] = datetime.now(timezone.utc)  # Set current UTC time
