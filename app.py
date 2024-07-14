@@ -5,7 +5,6 @@ from datetime import datetime, timedelta, timezone
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Needed for session management
 
-
 # Sample car data
 cars = [
     {
@@ -38,9 +37,7 @@ cars = [
     },
 ]
 
-
 SESSION_TIMEOUT = timedelta(minutes=15)
-
 
 def login_required(f):
     @wraps(f)
@@ -72,6 +69,19 @@ def cars_list():
     new_cars = [car for car in filtered_cars if (urgent != "true" or car.get('urgent'))]
 
     return render_template("car_list.html", car_list=new_cars)
+
+
+
+@app.route("/add_to_treatment/<id>")
+@login_required
+def add_to_treatment(id):
+    if 'my_cars' not in session:
+        session['my_cars'] = []
+    car = next((car for car in cars if car["id"] == id), None)
+    if car and car not in session['my_cars']:
+        session['my_cars'].append(car)
+        flash(f'Car {car["number"]} added to your treatment list!', 'success')
+    return redirect(url_for('cars_list'))
 
 
 
@@ -164,6 +174,31 @@ def delete_car(id):
     else:
         flash('Car not found', 'danger')
     return redirect(url_for('cars_list'))
+
+
+
+@app.route("/add_existing_car", methods=['GET', 'POST'])
+@login_required
+def add_existing_car():
+    if request.method == 'POST':
+        car_id = request.form.get('car_id')
+        car = next((car for car in cars if car["id"] == car_id), None)
+        if car:
+            if 'my_cars' not in session:
+                session['my_cars'] = []
+            if car not in session['my_cars']:
+                session['my_cars'].append(car)
+                flash(f'Added Car {car["number"]} to the treatment list!', 'success')
+            return redirect(url_for('my_cars'))
+    return render_template("add_existing_car.html", car_list=cars)
+
+
+
+@app.route("/my_cars")
+@login_required
+def my_cars():
+    my_cars_list = session.get('my_cars', [])
+    return render_template("my_cars.html", car_list=my_cars_list)
 
 
 

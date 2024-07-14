@@ -34,7 +34,7 @@
 <body>
     <div class="jumbotron jumbotron-sm">
         <div class="container text-center">
-            <h1 class="h1">Tal's Garage</h1>
+            <h1 class="h1">Talos's Garage</h1>
             <h2 class="h2">No Shoes, No Shirts, No Mazdas</h2>
         </div>
     </div>
@@ -46,8 +46,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-                <!-- </button>
-                <a class="navbar-brand" href="#">Logo</a> -->
+                </button>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
@@ -55,13 +54,23 @@
                     <li><a href="{{ url_for('cars_list', urgent='true') }}">Urgent Cars</a></li>
                     <li><a href="{{ url_for('cars_list', problem='engine') }}">Engine Issue</a></li>
                     <li><a href="{{ url_for('cars_list', problem='gear') }}">Gear Issue</a></li>
-                    <li><a href="{{ url_for('add_car') }}">Add Car</a></li>
+                    <li><a href="{{ url_for('add_existing_car') }}">Add To Treat</a></li>
                     <li><a href="{{ url_for('search_car') }}">Search</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if session.get("user") %}
                     <li>
                         <a href="#"><span class="glyphicon glyphicon-user"></span> Welcome, {{ session["user"] }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('my_cars') }}">
+                            <span class="glyphicon glyphicon-wrench"></span> In Treatment
+                            {% if session.get('my_cars', []) %}
+                                ({{ session['my_cars']|length }})
+                            {% else %}
+                                (0)
+                            {% endif %}
+                        </a>
                     </li>
                     <li>
                         <a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
@@ -76,15 +85,15 @@
         </div>
     </nav>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <ul class="flashes">
-                    {% for category, message in messages %}
-                        <li class="alert alert-{{ category }}">{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="alert alert-{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
 
     <div class="container">
         {% block content %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}My Cars in Treatment{% endblock %}
+
+{% block content %}
+<h1>Cars in Treatment</h1>
+<ul>
+    {% for car in session.get('my_cars', []) %}
+    <li>
+        <img src="{{ car.image }}" alt="{{ car.number }}" style="width: 200px;">
+        <p>Number: {{ car.number }}</p>
+        <p>Problems: {{ car.problems|join(', ') }}</p>
+        <p>Urgent: {{ car.urgent }}</p>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

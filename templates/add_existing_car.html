@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Add Existing Car{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Add Existing Car</h2>
+    <form method="post" action="{{ url_for('add_existing_car') }}">
+        <div class="form-group">
+            <label for="car_id">Select Car:</label>
+            <select class="form-control" id="car_id" name="car_id">
+                {% for car in car_list %}
+                <option value="{{ car.id }}">{{ car.number }} - {{ car.problems|join(', ') }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Car</button>
+    </form>
+</div>
+{% endblock %}
